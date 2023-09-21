@@ -13,7 +13,6 @@ export default function Home() {
     <div className='text-3xl px-4 py-5'>Home</div>
     <button onClick={gotoTest} className='border border-solid p-4 rounded-full border-pink-500 mr-2'>go to subapp</button>
     <button onClick={alertTest} className='border border-solid p-4 rounded-full border-pink-500 mr-2'>how do irish people say good morning?</button>
-    <appButton onClick={alertTest}>again?</appButton>
     </main>
   )
 }
