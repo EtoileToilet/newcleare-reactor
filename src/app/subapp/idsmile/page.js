@@ -1,11 +1,12 @@
 "use client";
 import { NextButton } from "@app/components/app-button"
 import { itemService } from "@app/services/item.service";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 export default function SubAppTablemaker() {
   const router = useRouter();
   const [item, setItem] = useState({
+    id: undefined,
     name: "",
     price: "",
     stockye: "I",
@@ -29,10 +30,29 @@ export default function SubAppTablemaker() {
     console.error(e);
   }
 };
+useEffect(() => {
+    const searchItem = async () => {
+        const item = await itemService.searchItemById(+params.id);
+        if (!item) {
+            alert("this doesn't exist!");
+            return;
+        }
+        setItem(item);
+    }
+    searchItem();
+}, []);
+if (!item.id){
+    return <div>not found</div>;
+}
   return (
     <div className="">
-      <div className="text-2xl font-bold">add new</div>
+      <div className="text-2xl font-bold">edit</div>
       <form onSubmit={onSubmit}>
+        <div className="mb-4">
+            <label htmlFor="id" className="text-sm">
+                id
+            </label>
+        </div>
         <div>
           <label className="inline-block w-20" htmlFor="name">name</label>
           <input className="border border-pink-500 text-black" type="text" id="name" name="name" defaultValue={item.name} onChange={(e) => {

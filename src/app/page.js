@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { NextButton } from "@app/components/app-button";
 
 export default function Home() {
   const router = useRouter();
@@ -11,9 +12,9 @@ export default function Home() {
   return (
     <main className=''>
     <div className='text-3xl px-4 py-5'>Home</div>
-    <button onClick={gotoTest} className='border border-solid p-4 rounded-full border-pink-500 mr-2'>go to subapp</button>
-    <button onClick={alertTest} className='border border-solid p-4 rounded-full border-pink-500 mr-2'>how do irish people say good morning?</button>
-    <appButton onClick={alertTest}>again?</appButton>
+    <button onClick={gotoTest} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>go to subapp</button>
+    <button onClick={alertTest} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>how do irish people say good morning?</button>
+    <NextButton onClick={alertTest}>hah?</NextButton>
     </main>
   )
 }
