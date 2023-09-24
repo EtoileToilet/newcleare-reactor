@@ -3,7 +3,7 @@ if (typeof window !== 'undefined') {
     itemList = JSON.parse(localStorage.getItem('itemList')) || [];
 };
 const getNewId = () => {
-    return Math.max(...students.map((s) => s.id), 0) + 1;
+    return Math.max(...itemList.map((s) => s.id), 0) + 1;
   };
 const searchItem = async (filters, pagination) => {
     let filteredItems = itemList;

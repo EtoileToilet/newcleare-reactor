@@ -96,7 +96,7 @@ export default function SubApp() {
         </div>
       </div>
       <div>
-        {itemList.map((item) => (
+        {itemList.data.map((item) => (
           <div key={item.id} className="border border-dashed border-pink-500 p-2 mt-2">
             <div>name: {item.name}</div>
             <div>price: {item.price}</div>
