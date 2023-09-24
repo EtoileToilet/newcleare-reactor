@@ -1,4 +1,4 @@
-import { AppButton } from "@app/components/app-button";
+import { NextButton } from "@app/components/app-button";
 
 export const AppPagination = ({ 
     itemsPerPage, 
@@ -10,17 +10,17 @@ export const AppPagination = ({
     const totalPage = lastPageIndex === - 1 ? 1 : lastPageIndex + 1;
     return (
         <div>
-            <AppButton 
+            <NextButton 
             color={pageIndex === 0 ?"blue": 'black'} 
             disabled={pageIndex === 0}
             onClick={() => setPageIndex(pageIndex - 1)}
             >
                 prev
-            </AppButton>
+            </NextButton>
             <span>
                 page {pageIndex + 1} out of {totalPage}
             </span>
-            <AppButton 
+            <NextButton 
             color={
                 pageIndex === lastPageIndex || lastPageIndex === - 1 ? "blue": 'black'
             } 
@@ -28,7 +28,7 @@ export const AppPagination = ({
             onClick={() => setPageIndex(pageIndex + 1)}
             >
                 next
-            </AppButton>
+            </NextButton>
             <span>total: {total} items</span>            
         </div>
     );
