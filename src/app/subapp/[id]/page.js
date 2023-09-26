@@ -50,9 +50,10 @@ if (!item.id){
       <div className="text-2xl font-bold">edit</div>
       <form onSubmit={onSubmit}>
         <div className="mb-4">
-            <label htmlFor="id" className="text-sm">
+            <label htmlFor="id" className="inline-block w-20">
                 id
             </label>
+            <input className="border border-pink-500 text-black" type="text" id="id" name="id" value={item.id} disabled></input>
         </div>
         <div>
           <label className="inline-block w-20" htmlFor="name">name</label>

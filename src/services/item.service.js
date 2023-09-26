@@ -31,8 +31,9 @@ const createItem = async (item) => {
 };
 
 const updateItem = async (item) => {
+    console.log(itemList, item);
     itemList = itemList.map((s) => { 
-    if (s.id === itemList.id) {return itemList;} return s;});
+    if (s.id === item.id) {return item;} return s;});
     localStorage.setItem("itemList", JSON.stringify(itemList));
 };
 
