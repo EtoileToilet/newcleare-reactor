@@ -3,7 +3,7 @@ import { NextButton } from "@app/components/app-button"
 import { itemService } from "@app/services/item.service";
 import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
-export default function editItem({ params }) {
+export default function EditItem({ params }) {
   console.log(params.id);
   const router = useRouter();
   const [item, setItem] = useState({
