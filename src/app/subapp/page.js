@@ -35,6 +35,7 @@ export default function SubApp() {
   const lookforItems = async () => {
     const result = await itemService.searchItem(filters, pagination);
     setSearchResult(result);
+    console.log(result, filters, pagination);
   };
   const confirmDeletion = (item) => {
     if (!window.confirm(`you sure about this?`)){
@@ -52,7 +53,7 @@ export default function SubApp() {
     lookforItems();
   }, [filters.stockye, searchTermDebounced]);
   useEffect(() => {
-    lookforItems;
+    lookforItems();
   }, [pagination.pageIndex]);
   return (
     <div className="">
@@ -63,7 +64,10 @@ export default function SubApp() {
           <div className="text-lg">search</div>
         </div>
         <div>
-          <input type="text" name="searchTerm" className="border border-pink-500 p-2 text-black" defaultValue={filters.searchTerm} onChange={(e) => setFilters}></input>
+          <input type="text" name="searchTerm" className="border border-pink-500 p-2 text-black" defaultValue={filters.searchTerm} onChange={(e) => setFilters({
+            ...filters,
+              searchTerm: e.target.value,
+          })}></input>
         </div>
         <div>
         <label htmlFor="all" className="mr-3">
