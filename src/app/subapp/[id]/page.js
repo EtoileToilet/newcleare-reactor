@@ -3,7 +3,8 @@ import { NextButton } from "@app/components/app-button"
 import { itemService } from "@app/services/item.service";
 import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
-export default function SubAppTablemaker() {
+export default function editItem({ params }) {
+  console.log(params.id);
   const router = useRouter();
   const [item, setItem] = useState({
     id: undefined,
@@ -22,7 +23,7 @@ export default function SubAppTablemaker() {
       alert('how much is this again?');
       return;
     }
-    await itemService.createItem(item);
+    await itemService.updateItem(item);
     alert("got 'em");
     router.push("/subapp");
   } catch(e){
@@ -55,7 +56,7 @@ if (!item.id){
         </div>
         <div>
           <label className="inline-block w-20" htmlFor="name">name</label>
-          <input className="border border-pink-500 text-black" type="text" id="name" name="name" defaultValue={item.name} onChange={(e) => {
+          <input className="border border-pink-500 text-black" type="text" id="name" name="name" value={item.name} onChange={(e) => {
             setItem({
               ...item,
               name: e.target.value,
@@ -64,7 +65,7 @@ if (!item.id){
         </div>
         <div className="mt-2">
           <label className="inline-block w-20" htmlFor="price">price</label>
-          <input className="border border-pink-500 text-black" type="number" id="price" name="price" defaultValue={item.price} onChange={(e) => {
+          <input className="border border-pink-500 text-black" type="number" id="price" name="price" value={item.price} onChange={(e) => {
             setItem({
               ...item,
               price: e.target.value,

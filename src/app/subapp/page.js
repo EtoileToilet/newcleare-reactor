@@ -7,9 +7,9 @@ import { useState } from "react";
 import { AppPagination } from "@app/components/app-pagination";
 import { useDebounce } from "use-debounce";
 export default function SubApp() {
-  const [itemList, setItemList] = useState({
+  const [searchResult, setSearchResult] = useState({
     data: [],
-    total: 0
+    total: 0,
   });
   const [filters, setFilters] = useState({
     searchTerm: "",
@@ -22,7 +22,7 @@ export default function SubApp() {
   });
   const router = useRouter();
   const addNew = () => {router.push("/subapp/add-to-table");};
-  const editItem = (id) => {router.push(`/subapp/$(id)`);};
+  const modItem = (id) => {router.push(`/subapp/${id}`);};
   const getStockStatus = (value) => {
     if (value === "I") {
       return "in stock";
@@ -34,7 +34,7 @@ export default function SubApp() {
   };
   const lookforItems = async () => {
     const result = await itemService.searchItem(filters, pagination);
-    setItemList(result);
+    setSearchResult(result);
   };
   const confirmDeletion = (item) => {
     if (!window.confirm(`you sure about this?`)){
@@ -53,7 +53,7 @@ export default function SubApp() {
   }, [filters.stockye, searchTermDebounced]);
   useEffect(() => {
     lookforItems;
-  }, [pagination.pageIndex])
+  }, [pagination.pageIndex]);
   return (
     <div className="">
       <div className="m-2 text-lg">what do you want to do?</div>
@@ -96,15 +96,21 @@ export default function SubApp() {
         </div>
       </div>
       <div>
-        {itemList.map((item) => (
+        {searchResult.data.map((item) => (
           <div key={item.id} className="border border-dashed border-pink-500 p-2 mt-2">
             <div>name: {item.name}</div>
             <div>price: {item.price}</div>
             <div>status: {getStockStatus(item.stockye)}</div>
-            <div><NextButton color="blue"onClick={() => editItem(item.id)}>edit</NextButton></div>
+            <div><NextButton color="blue"onClick={() => modItem(item.id)}>edit</NextButton></div>
             <div><NextButton color="red" onClick={() => confirmDeletion(item)}>delete</NextButton></div>
           </div>
         ))}
+        <AppPagination {...pagination} total={searchResult.total} setPageIndex={(newPageIndex) => {
+          setPagination({
+          ...pagination,
+            pageIndex: newPageIndex,
+          })
+        }}></AppPagination>
       </div>
     </div>
   )
