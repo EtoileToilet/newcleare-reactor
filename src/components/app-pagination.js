@@ -11,7 +11,7 @@ export const AppPagination = ({
     return (
         <div>
             <NextButton 
-            color={pageIndex === 0 ?"blue": 'black'} 
+            color={pageIndex === 0 ?"black": 'blue'} 
             disabled={pageIndex === 0}
             onClick={() => setPageIndex(pageIndex - 1)}
             >
@@ -22,7 +22,7 @@ export const AppPagination = ({
             </span>
             <NextButton 
             color={
-                pageIndex === lastPageIndex || lastPageIndex === - 1 ? "blue": 'black'
+                pageIndex === lastPageIndex || lastPageIndex === - 1 ? "black": 'blue'
             } 
             disabled={pageIndex === lastPageIndex || lastPageIndex === - 1}
             onClick={() => setPageIndex(pageIndex + 1)}

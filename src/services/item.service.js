@@ -15,7 +15,7 @@ const searchItem = async (filters, pagination) => {
         filteredItems = filteredItems.filter((s) => s.stockye === filters.stockye);
     };
     const total = filteredItems.length;
-    const paginatedItems = filteredItems.slice(pagination.pageIndex * pagination.itemsPerPage * (pagination.pageIndex + 1) * pagination.itemsPerPage);
+    const paginatedItems = filteredItems.slice(pagination.pageIndex * pagination.itemsPerPage, (pagination.pageIndex + 1) * pagination.itemsPerPage);
     return {
         data: paginatedItems,
         total: total
@@ -30,7 +30,7 @@ const createItem = async (item) => {
     localStorage.setItem("itemList", JSON.stringify(itemList));
 };
 
-const updateItem = (id, item) => {
+const updateItem = async (item) => {
     itemList = itemList.map((s) => { 
     if (s.id === itemList.id) {return itemList;} return s;});
     localStorage.setItem("itemList", JSON.stringify(itemList));
