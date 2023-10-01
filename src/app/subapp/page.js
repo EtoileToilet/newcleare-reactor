@@ -6,7 +6,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { AppPagination } from "@app/components/app-pagination";
 import { useDebounce } from "use-debounce";
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/theme.context";
 export default function SubApp() {
+  const theme = useContext(ThemeContext);
   const [searchResult, setSearchResult] = useState({
     data: [],
     total: 0,
@@ -56,7 +59,9 @@ export default function SubApp() {
     lookforItems();
   }, [pagination.pageIndex]);
   return (
+    <>
     <div className="">
+      <div>theme: {theme}</div>
       <div className="m-2 text-lg">what do you want to do?</div>
       <NextButton onClick={addNew}>add new</NextButton>
       <div>
@@ -117,5 +122,6 @@ export default function SubApp() {
         }}></AppPagination>
       </div>
     </div>
+    </>
   )
 }
