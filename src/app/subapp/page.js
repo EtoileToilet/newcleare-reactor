@@ -8,6 +8,15 @@ import { AppPagination } from "@app/components/app-pagination";
 import { useDebounce } from "use-debounce";
 import { useContext } from "react";
 import { ThemeContext } from "../contexts/theme.context";
+import TextField from '@mui/material/TextField';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import { Button, SvgIcon } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+
 export default function SubApp() {
   const theme = useContext(ThemeContext);
   const [searchResult, setSearchResult] = useState({
@@ -63,46 +72,23 @@ export default function SubApp() {
     <div className="">
       <div>theme: {theme}</div>
       <div className="m-2 text-lg">what do you want to do?</div>
-      <NextButton onClick={addNew}>add new</NextButton>
-      <div>
-        <div>
-          <div className="text-lg">search</div>
-        </div>
-        <div>
-          <input type="text" name="searchTerm" className="border border-pink-500 p-2 text-black" defaultValue={filters.searchTerm} onChange={(e) => setFilters({
+      <Button onClick={addNew}>add new</Button>
+      <TextField id="searchTerm" variant="standard" defaultValue={filters.searchTerm} onChange={(e) => {
+        setFilters({
+        ...filters,
+          searchTerm: e.target.value,
+        })
+      }}></TextField>
+              <RadioGroup aria-label="stockye" name="stockye" defaultValue={filters.stockye} onChange={(e) => {
+          setFilters({
             ...filters,
-              searchTerm: e.target.value,
-          })}></input>
-        </div>
-        <div>
-        <label htmlFor="all" className="mr-3">
-          <input type="radio" id="all" name="stockye" className="mr-2" value={""} checked={filters.stockye === ""} onChange={(e) => {
-            setFilters({
-              ...filters,
-              stockye: e.target.value,
-            })
-          }}/>
-          all
-          </label>
-          <label htmlFor="stock" className="mr-3">
-          <input type="radio" id="stock" name="stockye" className="mr-2" value={"I"} checked={filters.stockye === "I"} onChange={(e) => {
-            setFilters({
-              ...filters,
-              stockye: e.target.value,
-            })
-          }}/>
-          in stock 
-          </label>
-          <label htmlFor="nostock">
-          <input type="radio" id="nostock" name="stockye" className="mr-2" value={"O"} checked={filters.stockye === "O"} onChange={(e) => {
-            setFilters({
-              ...filters,
-              stockye: e.target.value,
-            })
-          }}/>
-          out of stock 
-          </label>
-        </div>
+            stockye: e.target.value,
+          })
+        }}>
+          <FormControlLabel value="" control={<Radio />} label="all" />
+          <FormControlLabel value="I" control={<Radio />} label="in stock" />
+          <FormControlLabel value="O" control={<Radio />} label="out of stock" />
+        </RadioGroup>
       </div>
       <div>
         {searchResult.data.map((item) => (
@@ -110,8 +96,8 @@ export default function SubApp() {
             <div>name: {item.name}</div>
             <div>price: {item.price}</div>
             <div>status: {getStockStatus(item.stockye)}</div>
-            <div><NextButton color="blue"onClick={() => modItem(item.id)}>edit</NextButton></div>
-            <div><NextButton color="red" onClick={() => confirmDeletion(item)}>delete</NextButton></div>
+            <div><Button  color="primary" startIcon={<SvgIcon icon={Edit}/>} onClick={() => modItem(item.id)}>edit</Button></div>
+            <div><Button  color="error" startIcon={<SvgIcon icon={Delete}/>} onClick={() => confirmDeletion(item)}>delete</Button></div>
           </div>
         ))}
         <AppPagination {...pagination} total={searchResult.total} setPageIndex={(newPageIndex) => {
@@ -121,7 +107,6 @@ export default function SubApp() {
           })
         }}></AppPagination>
       </div>
-    </div>
     </>
   )
 }
