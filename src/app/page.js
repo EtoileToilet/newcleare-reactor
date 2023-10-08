@@ -4,6 +4,7 @@ import Link from "next/link";
 import { NextButton } from "@app/components/app-button";
 import { useSelector } from "react-redux";
 import { getAuth, signOut } from "firebase/auth";
+import { Button } from "@mui/material";
 
 export default function Home() {
   const router = useRouter();
@@ -24,19 +25,20 @@ export default function Home() {
     //alert("under construction. you're trapped in here with me now, hehehe");
   }
   return (
-    <main className=''>
+    <main className='text-center'>
     <div className='text-3xl px-4 py-5'>Home</div>
     {!user.id && <>
-      <button onClick={signIn} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>sign in</button>
-      <button onClick={register} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>register</button>
+      <Button sx={{mr:2,}} onClick={signIn}>sign in</Button>
+      <Button sx={{mr:2,}} onClick={register}>register</Button>
     </>}
     {!!user.id && <>
       <div>good day, {user.displayName}</div>
-      <button onClick={signOutUser} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>sign out</button>
+      <Button onClick={signOutUser}>sign out</Button>
+      <Button onClick={gotoTest} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>go to subapp</Button>
     </>}    
-    <button onClick={gotoTest} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>go to subapp</button>
-    <button onClick={alertTest} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>how do irish people say good morning?</button>
-    <NextButton onClick={alertTest}>hah?</NextButton>
+    
+    {/* <button onClick={alertTest} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>how do irish people say good morning?</button>
+    <NextButton onClick={alertTest}>hah?</NextButton> */}
     </main>
   )
 }

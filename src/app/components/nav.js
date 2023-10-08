@@ -1,12 +1,15 @@
+import { Button, ButtonGroup } from "@mui/material";
 import Link from "next/link"
 export default function Nav() {
     return(
-        <div>
+        <div className="text-center">
+            <ButtonGroup>
+            <Button>
             <Link href="/" className="mx-2">
                 Home
-            </Link>
-            <span className="mx-4">|</span>
-            <Link href="/subapp" className="mx-2">Test</Link>
+            </Link></Button>
+            <Button><Link href="/subapp" className="mx-2">Test</Link></Button>
+            </ButtonGroup>
         </div>
     );
 }
