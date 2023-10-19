@@ -51,25 +51,24 @@ export default function Register() {
 
     const onSubmit = async (values) => {
       try{
-      e.preventDefault();
-      // if (!values.email) {
-      //   //alert('email, please?');
-      //   setSnack({
-      //     open: true,
-      //     message: "email, please?",
-      //     severity: "error",
-      //   })
-      //   return;
-      // }
-      // if (!values.password) {
-      //   //alert("surely you know that a password field can't be blank, no?");
-      //   setSnack({
-      //     open: true,
-      //     message: "surely you know that a password field can't be blank, no?",
-      //     severity: "error",
-      //   });
-      //   return;
-      // }
+      if (!values.email) {
+        //alert('email, please?');
+        setSnack({
+          open: true,
+          message: "email, please?",
+          severity: "error",
+        })
+        return;
+      }
+      if (!values.password) {
+        //alert("surely you know that a password field can't be blank, no?");
+        setSnack({
+          open: true,
+          message: "surely you know that a password field can't be blank, no?",
+          severity: "error",
+        });
+        return;
+      }
       const auth = getAuth();
       await createUserWithEmailAndPassword(auth, values.email, values.password);
       setSnack({
@@ -80,14 +79,14 @@ export default function Register() {
       await sleep(1500);
       router.push('/')
     } catch(e){
-      //alert(e.message);
-      // let errorMessage = e.message;
-      // if (e.code === "auth/invalid-login-credentials") {
-      //   errorMessage = "something smells fishy. maybe recheck your credentials?"
-      // }
-      // if (e.code === "auth/invalid-email") {
-      //   errorMessage = "i've seen a lot of emails, and i'm pretty sure yours isn't one"
-      // }
+      alert(e.message);
+      let errorMessage = e.message;
+      if (e.code === "auth/invalid-login-credentials") {
+        errorMessage = "something smells fishy. maybe recheck your credentials?"
+      }
+      if (e.code === "auth/invalid-email") {
+        errorMessage = "i've seen a lot of emails, and i'm pretty sure yours isn't one"
+      }
       setSnack({
         open: true,
         message: errorMessage,
