@@ -1,4 +1,5 @@
 import { NextButton } from "@app/components/app-button";
+import { Box, Button } from "@mui/material";
 
 export const AppPagination = ({ 
     itemsPerPage, 
@@ -9,27 +10,29 @@ export const AppPagination = ({
     const lastPageIndex = Math.ceil(total / itemsPerPage) - 1;
     const totalPage = lastPageIndex === - 1 ? 1 : lastPageIndex + 1;
     return (
-        <div>
-            <NextButton 
-            color={pageIndex === 0 ?"black": 'blue'} 
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="10vh">
+        <div className="content-center">
+            <Button 
+            color={pageIndex === 0 ?"secondary": 'primary'} 
             disabled={pageIndex === 0}
             onClick={() => setPageIndex(pageIndex - 1)}
             >
                 prev
-            </NextButton>
-            <span>
+            </Button>
+            <span className="px-4">
                 page {pageIndex + 1} out of {totalPage}
             </span>
-            <NextButton 
+            <Button 
             color={
-                pageIndex === lastPageIndex || lastPageIndex === - 1 ? "black": 'blue'
+                pageIndex === lastPageIndex || lastPageIndex === - 1 ? "secondary": 'primary'
             } 
             disabled={pageIndex === lastPageIndex || lastPageIndex === - 1}
             onClick={() => setPageIndex(pageIndex + 1)}
             >
                 next
-            </NextButton>
+            </Button>
             <span>total: {total} items</span>            
         </div>
+        </Box>
     );
 }

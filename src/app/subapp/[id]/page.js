@@ -55,7 +55,7 @@ if (!item.id){
   return (
     <div className="">
       <div className="text-2xl font-bold">edit</div>
-      <FormControl onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}>
         <TextField id="name" label="name" defaultValue={item.name} onChange={(e) => {
           setItem({
           ...item,
@@ -78,7 +78,7 @@ if (!item.id){
           <FormControlLabel value="O" control={<Radio />} label="out of stock" />
         </RadioGroup>
         <Button  type="submit">save</Button>
-      </FormControl>
+      </form>
     </div>
   )
 }

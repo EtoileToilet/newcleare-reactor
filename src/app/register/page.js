@@ -109,12 +109,14 @@ export default function Register() {
         <div className="text-lg">register</div>
         <form onSubmit={formik.handleSubmit}>
           <div className="p-2 flex flex-col gap-1 w-96">  
-          <TextField required id="email" label="email" variant="standard" value={formik.values.email} onChange={formik.handleChange}></TextField>
+          <TextField required id="email" label="email" variant="standard" value={formik.values.email} onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}></TextField>
           {formik.touched.email && formik.errors.email && (
           <FormHelperText error>{formik.errors.email}</FormHelperText>)}
           </div>
           <div className="p-2 flex flex-col gap-1 w-96">
             <TextField required type={showPassword?"text":"password"} id="password" label="password" variant="standard" value={formik.values.password} onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
