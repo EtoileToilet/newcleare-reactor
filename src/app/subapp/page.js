@@ -1,6 +1,6 @@
 "use client";
 import { NextButton } from "@app/components/app-button";
-import { itemService } from "@app/services/item.service";
+import { itemBackendService } from "@app/services/item-backend.service";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -45,7 +45,7 @@ export default function SubApp() {
     return "";
   };
   const lookforItems = async () => {
-    const result = await itemService.searchItem(filters, pagination);
+    const result = await itemBackendService.searchItem(filters, pagination);
     setSearchResult(result);
     console.log(result, filters, pagination);
   };
@@ -53,7 +53,7 @@ export default function SubApp() {
     if (!window.confirm(`you sure about this?`)){
       return;
     }
-    itemService.deleteItem(item.id);
+    itemBackendService.deleteItem(item.id);
     alert('there you have it');
     lookforItems();
   }

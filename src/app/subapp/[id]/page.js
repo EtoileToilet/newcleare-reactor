@@ -1,6 +1,6 @@
 "use client";
 import { NextButton } from "@app/components/app-button"
-import { itemService } from "@app/services/item.service";
+import { itemBackendService } from "@app/services/item-backend.service";
 import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import TextField from '@mui/material/TextField';
@@ -30,7 +30,7 @@ export default function EditItem({ params }) {
       alert('how much is this again?');
       return;
     }
-    await itemService.updateItem(item);
+    await itemBackendService.updateItem(item);
     alert("got 'em");
     router.push("/subapp");
   } catch(e){
@@ -40,7 +40,7 @@ export default function EditItem({ params }) {
 };
 useEffect(() => {
     const searchItem = async () => {
-        const item = await itemService.searchItemById(+params.id);
+        const item = await itemBackendService.searchItemById(+params.id);
         if (!item) {
             alert("this doesn't exist!");
             return;

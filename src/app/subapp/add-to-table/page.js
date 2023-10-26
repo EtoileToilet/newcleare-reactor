@@ -1,6 +1,6 @@
 "use client";
 import { NextButton } from "@app/components/app-button"
-import { itemService } from "@app/services/item.service";
+import { itemBackendService } from "@app/services/item-backend.service";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import TextField from '@mui/material/TextField';
@@ -52,7 +52,7 @@ export default function SubAppTablemaker() {
     //   alert('how much is this again?');
     //   return;
     // }
-    await itemService.createItem({
+    await itemBackendService.createItem({
       ...values,
       price: +values.price,
     });
