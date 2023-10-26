@@ -1,6 +1,6 @@
 "use client";
 import { NextButton } from "@app/components/app-button";
-import { itemService } from "@app/services/item.service";
+import { itemBackendService } from "@app/services/item-backend.service";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -14,7 +14,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { Button, SvgIcon } from "@mui/material";
+import { Box, Button, SvgIcon } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 
 export default function SubApp() {
@@ -45,7 +45,7 @@ export default function SubApp() {
     return "";
   };
   const lookforItems = async () => {
-    const result = await itemService.searchItem(filters, pagination);
+    const result = await itemBackendService.searchItem(filters, pagination);
     setSearchResult(result);
     console.log(result, filters, pagination);
   };
@@ -53,7 +53,7 @@ export default function SubApp() {
     if (!window.confirm(`you sure about this?`)){
       return;
     }
-    itemService.deleteItem(item.id);
+    itemBackendService.deleteItem(item.id);
     alert('there you have it');
     lookforItems();
   }
@@ -69,6 +69,7 @@ export default function SubApp() {
   }, [pagination.pageIndex]);
   return (
     <>
+    <Box>
     <div className="">
       <div>theme: {theme}</div>
       <div className="m-2 text-lg">what do you want to do?</div>
@@ -90,14 +91,16 @@ export default function SubApp() {
           <FormControlLabel value="O" control={<Radio />} label="out of stock" />
         </RadioGroup>
       </div>
+    </Box>
+    <Box>
       <div>
         {searchResult.data.map((item) => (
           <div key={item.id} className="border border-dashed border-pink-500 p-2 mt-2">
             <div>name: {item.name}</div>
             <div>price: {item.price}</div>
             <div>status: {getStockStatus(item.stockye)}</div>
-            <div><Button  color="primary" startIcon={<SvgIcon icon={Edit}/>} onClick={() => modItem(item.id)}>edit</Button></div>
-            <div><Button  color="error" startIcon={<SvgIcon icon={Delete}/>} onClick={() => confirmDeletion(item)}>delete</Button></div>
+            <div><Button  color="primary" startIcon={<SvgIcon component={Edit}/>} onClick={() => modItem(item.id)}>edit</Button></div>
+            <div><Button  color="error" startIcon={<SvgIcon component={Delete}/>} onClick={() => confirmDeletion(item)}>delete</Button></div>
           </div>
         ))}
         <AppPagination {...pagination} total={searchResult.total} setPageIndex={(newPageIndex) => {
@@ -107,6 +110,7 @@ export default function SubApp() {
           })
         }}></AppPagination>
       </div>
+    </Box>
     </>
   )
 }
