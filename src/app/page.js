@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <main className='text-center'>
     <div className='text-5xl px-4 py-3'>home</div>
-    <div className="text-xl px-4 pt-3 pb-10">*insert a really cool tagline that i can't think of yet here*</div>
+    <div className="text-xl px-4 pt-3 pb-10">*insert a really cool tagline that i can&apos;t think of yet here*</div>
     {!user.id && <>
       <Button sx={{mr:2,}} onClick={signIn}>sign in</Button>
       <Button sx={{mr:2,}} onClick={register}>register</Button>
