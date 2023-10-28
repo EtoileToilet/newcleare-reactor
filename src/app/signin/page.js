@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { NextButton } from "@app/components/app-button";
 import { useDispatch } from "react-redux";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail } from "firebase/auth";
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import { Button, IconButton, InputAdornment, Snackbar } from "@mui/material";
@@ -15,6 +15,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import FormHelperText from '@mui/material/FormHelperText';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import GoogleIcon from '@mui/icons-material/Google';
+import Link from "next/link"
 
 
 const Alert = React.forwardRef(function Alert(props,ref) {
@@ -28,6 +30,8 @@ const validationSchema = yup.object({
   email: yup.string().required("what? did you get your identity stolen or something?").email("i've seen a lot of emails, and i'm pretty sure yours doesn't look like one"),
   password: yup.string().required("you wanna leave your data unsecured in the open or what?").matches(passwordRegex, "at least 8 characters, one lowercase, one uppercase, one number, one special character and i'll let you in"),
 })
+
+const provider = new GoogleAuthProvider();
 
 export default function SignIn() {
     const router = useRouter();
@@ -101,6 +105,38 @@ export default function SignIn() {
       console.error(e);
     }
   };
+  const handleGoogleLogin = async () => {
+    try {
+      const auth = getAuth();
+      await signInWithPopup(auth, provider);
+      setSnack({
+        open: true,
+        message: "password reset email sent successfully",
+        severity: "success",
+      });
+      await sleep(1500);
+      router.push('/')
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  const handlePasswordReset = async () => {
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, formik.values.email);
+      setSnack({
+        open: true,
+        message: "welcome back",
+        severity: "success",
+      });
+      await sleep(1500);
+      router.push('/')
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -109,8 +145,9 @@ export default function SignIn() {
     validationSchema,
     onSubmit,
   });
+  
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
       <div className="text-center">
         <div className="text-lg">sign in</div>
         <form onSubmit={formik.handleSubmit}>
@@ -135,11 +172,13 @@ export default function SignIn() {
             {formik.touched.email && formik.errors.password && (
           <FormHelperText error>{formik.errors.password}</FormHelperText>)}
           </div>
-          <div className="p-2 w-30 flex-col gap-1">
-            <Button className="mt-2" type="submit">sign in</Button>
-            </div>
-            </form>
-            <div>
+          <div >
+            <Button type="submit">sign in</Button>
+          </div>
+            <div className="p-2 w-30 flex-col gap-1"><Button><Link href="/signin/password-reset" style={{ textDecoration: 'none' }} className="mx-2 text-pink-700">forgot your password?</Link></Button></div>
+            <Button onClick={handleGoogleLogin} startIcon={<GoogleIcon/>}>sign in with google</Button>
+        </form>
+          <div>
             {snack.open && <Snackbar open={snack.open} autoHideDuration={4000} onClose={handleClose}>
               <Alert
               onClose={handleClose}
