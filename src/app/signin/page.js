@@ -111,7 +111,7 @@ export default function SignIn() {
       await signInWithPopup(auth, provider);
       setSnack({
         open: true,
-        message: "password reset email sent successfully",
+        message: "welcome back",
         severity: "success",
       });
       await sleep(1500);
