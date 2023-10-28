@@ -8,7 +8,6 @@ import { AppFirebase } from "./app-firebase";
 import { CssBaseline, StyledEngineProvider, ThemeProvider, createTheme } from "@mui/material";
 import { pink } from "@mui/material/colors";
 
-const [mode, setMode] = useState("dark");
 const theme = createTheme({
     palette: {
         primary: pink,

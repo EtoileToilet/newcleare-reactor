@@ -27,7 +27,6 @@ export default function Nav() {
                     <ButtonGroup variant="text">
                     <Button><Link href="/" className="mx-2 text-pink-500">home</Link></Button>
                     <Button><Link href="/subapp" className="mx-2 text-pink-500">item list</Link></Button>
-                    <Button onClick={AppProviders.setTheme}></Button>
                     </ButtonGroup>
                 </Toolbar>
             </Container>
