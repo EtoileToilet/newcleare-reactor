@@ -6,16 +6,18 @@ import { NextButton } from "./app-button";
 import { store } from "@app/store/store";
 import { AppFirebase } from "./app-firebase";
 import { CssBaseline, StyledEngineProvider, ThemeProvider, createTheme } from "@mui/material";
+import { pink } from "@mui/material/colors";
 
 const theme = createTheme({
     palette: {
+        primary: pink,
         mode: "dark",
     },
     components: {
         MuiButton: {
             defaultProps: {
                 variant: "outlined",
-                className: 'border border-solid py-2 px-4 rounded-full border-pink-500 mr-2',
+                className: 'border border-solid py-2 px-4 mr-2',
                 style: {
                     textTransform: "uppercase",
                 }
@@ -27,6 +29,7 @@ const theme = createTheme({
 export const AppProviders = ( {children} ) => {
     //const [theme, setTheme] = useState("dark");
     //const toggleTheme = () => setTheme(theme === "dark"? "light" : "dark");
+
     return (
         <Provider store={store}>
             <AppFirebase>

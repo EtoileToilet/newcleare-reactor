@@ -26,15 +26,16 @@ export default function Home() {
   }
   return (
     <main className='text-center'>
-    <div className='text-3xl px-4 py-5'>Home</div>
+    <div className='text-5xl px-4 py-3'>home</div>
+    <div className="text-xl px-4 pt-3 pb-10">*insert a really cool tagline that i can't think of yet here*</div>
     {!user.id && <>
       <Button sx={{mr:2,}} onClick={signIn}>sign in</Button>
       <Button sx={{mr:2,}} onClick={register}>register</Button>
     </>}
     {!!user.id && <>
-      <div>good day, {user.displayName}</div>
+      <span className="px-4 pt-3 pb-5">good day, {user.displayName}</span>
       <Button onClick={signOutUser}>sign out</Button>
-      <Button onClick={gotoTest} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>go to subapp</Button>
+      <Button onClick={gotoTest}>go to subapp</Button>
     </>}    
     
     {/* <button onClick={alertTest} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>how do irish people say good morning?</button>

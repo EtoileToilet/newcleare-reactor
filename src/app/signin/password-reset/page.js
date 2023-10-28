@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { NextButton } from "@app/components/app-button";
 import { useDispatch } from "react-redux";
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail } from "firebase/auth";
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import { Button, IconButton, InputAdornment, Snackbar } from "@mui/material";
@@ -17,9 +17,11 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import GoogleIcon from '@mui/icons-material/Google';
 
+
 const Alert = React.forwardRef(function Alert(props,ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
 const passwordRegex = 
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -27,10 +29,15 @@ const validationSchema = yup.object({
   email: yup.string().required("what? did you get your identity stolen or something?").email("i've seen a lot of emails, and i'm pretty sure yours doesn't look like one"),
   password: yup.string().required("you wanna leave your data unsecured in the open or what?").matches(passwordRegex, "at least 8 characters, one lowercase, one uppercase, one number, one special character and i'll let you in"),
 })
+
 const provider = new GoogleAuthProvider();
 
-export default function Register() {
+export default function SignIn() {
     const router = useRouter();
+    // const [signInData, setSignInData] = useState({
+    //   email: "",
+    //   password: "",
+    // });
     const [snack, setSnack] = useState({
       open: false,
       message: "",
@@ -72,10 +79,10 @@ export default function Register() {
         return;
       }
       const auth = getAuth();
-      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      await signInWithEmailAndPassword(auth, values.email, values.password);
       setSnack({
         open: true,
-        message: "welcome aboard",
+        message: "welcome back",
         severity: "success",
       });
       await sleep(1500);
@@ -100,16 +107,37 @@ export default function Register() {
   const handleGoogleLogin = async () => {
     try {
       const auth = getAuth();
-      const result = await signInWithPopup(auth, provider);
+      await signInWithPopup(auth, provider);
       setSnack({
         open: true,
-        message: "welcome back",
+        message: "password reset email sent successfully",
         severity: "success",
       });
       await sleep(1500);
       router.push('/')
     } catch (error) {
       console.error(error);
+      return null;
+    }
+  };
+  const handlePasswordReset = async () => {
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, formik.values.email);
+      setSnack({
+        open: true,
+        message: "password reset email sent successfully",
+        severity: "success",
+      });
+      await sleep(1500);
+      router.push('/signin')
+    } catch (error) {
+      console.error(error);
+      setSnack({
+        open: true,
+        message: "something's off...",
+        severity: "error",
+      });
       return null;
     }
   };
@@ -121,10 +149,11 @@ export default function Register() {
     validationSchema,
     onSubmit,
   });
+  
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
       <div className="text-center">
-        <div className="text-lg">register</div>
+        <div className="text-lg">password reset</div>
         <form onSubmit={formik.handleSubmit}>
           <div className="p-2 flex flex-col gap-1 w-96">  
           <TextField required id="email" label="email" variant="standard" value={formik.values.email} onChange={formik.handleChange}
@@ -132,29 +161,9 @@ export default function Register() {
           {formik.touched.email && formik.errors.email && (
           <FormHelperText error>{formik.errors.email}</FormHelperText>)}
           </div>
-          <div className="p-2 flex flex-col gap-1 w-96">
-            <TextField required type={showPassword?"text":"password"} id="password" label="password" variant="standard" value={formik.values.password} onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)} size="small" tabIndex={-1}>
-                    {showPassword ? <VisibilityOff/> : <Visibility/>}
-                  </IconButton>
-                </InputAdornment>              
-              )
-            }}></TextField>
-            {formik.touched.email && formik.errors.password && (
-          <FormHelperText error>{formik.errors.password}</FormHelperText>)}
-          </div>
-          <div className="p-2 w-30 flex-col gap-1">
-            <Button type="submit">register</Button>
-            </div>
-            <div>
-              <Button onClick={handleGoogleLogin} startIcon={<GoogleIcon/>}>register with google</Button>
-            </div>
-            </form>
-            <div>
+            <div className="p-2 w-30 flex-col gap-1"><Button onClick={handlePasswordReset}>send password reset email</Button></div>
+        </form>
+          <div>
             {snack.open && <Snackbar open={snack.open} autoHideDuration={4000} onClose={handleClose}>
               <Alert
               onClose={handleClose}
