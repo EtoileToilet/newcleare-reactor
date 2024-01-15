@@ -24,7 +24,7 @@ const lookforItems = async (req, res) => {
         where,
         offset: query.pageIndex * query.itemsPerPage,
         limit: query.itemsPerPage,
-        order: ["name", "ASC"],
+        order: [["name", "ASC"]],
     });
     const total = await Item.count({
         where,
@@ -47,6 +47,7 @@ const createItem = async (req, res) => {
     });
 };
 export default async function handler(req, res) {
+    try {
     const user = await validateRequest(req);
     if (!user) {
         res.status(401).json({
@@ -62,4 +63,8 @@ export default async function handler(req, res) {
     res.status(405).json({
         message: "hold it right there, pal. what do you think you're trying to do?",
     });
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
 }
