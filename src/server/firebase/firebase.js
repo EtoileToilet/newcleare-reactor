@@ -1,4 +1,6 @@
 import admin from "firebase-admin";
+import { getApps } from "firebase-admin/app";
+import { getApp } from "firebase/app";
 
 const serviceAccount = {
   type: "service_account",
@@ -12,14 +14,13 @@ const serviceAccount = {
   auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
   client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-4psfp%40newcleare-reactor.iam.gserviceaccount.com",
   universe_domain: "googleapis.com"
-};
-
+}
 let app;
-if (!app) {
-  app = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-  console.log("Firebase initialized (server)", app);
+if (admin.apps.length === 0) {
+app = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+console.log("Firebase initialized (server)", app);
 }
 
 export const validateRequest = async (req) => {
