@@ -16,13 +16,17 @@ const serviceAccount = {
   universe_domain: "googleapis.com"
 }
 let app;
-if (admin.apps.length === 0) {
-app = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-console.log("Firebase initialized (server)", app);
+if (!admin.apps.length) {
+  try {
+    app = admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+    console.log("Firebase initialized (server)", app);
+    } catch(error)
+  {
+    console.log(error);
+  }
 }
-
 export const validateRequest = async (req) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
