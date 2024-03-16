@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Provider, connect, useDispatch } from "react-redux";
-import { NextButton } from "./app-button";
-import { store } from "@app/store/store";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
