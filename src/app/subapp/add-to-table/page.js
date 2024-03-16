@@ -10,22 +10,35 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import MuiAlert from "@mui/material/Alert";
-import { Button, FormHelperText, Snackbar } from "@mui/material";
+import { Box, Button, FormHelperText, Snackbar } from "@mui/material";
 import { useFormik } from "formik";
+import { enableReinitialize } from "formik"
 import * as yup from "yup";
 import { sleep } from "@app/utils/sleep";
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DatePicker } from "@mui/x-date-pickers/DatePicker"
+import { FormatStrikethrough } from "@mui/icons-material";
 
 const Alert = React.forwardRef(function Alert(props,ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const validationSchema = yup.object({
-  name: yup.string().required("name, please?"),
-  price: yup.number().required("how much is this again?").min(1000, "the only thing cheaper than 1000 dong is probably one candy, and we don't sell candy here"),
-  stockye: yup.string().required("clearly we can't have schroedinger's stock here"),
+  name: yup.string().required("Vui lòng nhập tên bệnh nhân"),
+  pid: yup.number().required("Vui lòng nhập PID"),//.min(1000, "the only thing cheaper than 1000 dong is probably one candy, and we don't sell candy here"),
+  gender: yup.string().required("Vui lòng điền giới tính bệnh nhân"),
+  dob: yup.date().required("Vui lòng nhập ngày tháng năm sinh"),
+  address: yup.string().required("Vui lòng nhập địa chỉ"),
+  phone: yup.number("Không hợp lệ"),
+  icd10: yup.string().required("Vui lòng nhập ICD10"),
+  osd: yup.date(),
+  diagdate: yup.date(),
 });
 export default function SubAppTablemaker() {
   const router = useRouter();
+  //const [time, setTime] = useState<Dayjs | null>(dayjs());
   const [snack, setSnack] = useState({
     open: false,
     message: "",
@@ -48,13 +61,13 @@ export default function SubAppTablemaker() {
     //   alert('name, please?');
     //   return;
     // }
-    // if (!item.price) {
+    // if (!item.pid) {
     //   alert('how much is this again?');
     //   return;
     // }
     await itemBackendService.createItem({
       ...values,
-      price: +values.price,
+      pid: +values.pid,
     });
     //alert("got 'em");
     setSnack({
@@ -62,7 +75,7 @@ export default function SubAppTablemaker() {
       message: "got 'em",
       severity: "success"
     });
-    await sleep(1000);
+    await sleep(750);
     router.push("/subapp");
   } catch(e){
     //alert("this ain't it, chief. care to try again?");
@@ -75,10 +88,25 @@ export default function SubAppTablemaker() {
   }
 };
 const formik = useFormik({
+  enableReinitialize,
   initialValues: {
     name: "",
-    price: "",
-    stockye: "I",
+    pid: "",
+    gender: "Nam",
+    dob: dayjs(),
+    address: "",
+    phone: "",
+    icd10: "",
+    med_history: "",
+    osd: dayjs(),
+    diagdate: dayjs(),
+    med_records: "",
+    biopsy_location: "",
+    biopsy: "",
+    broken_bones_complications: "",
+    tumor_size: "",
+    skip_lesion: "",
+    tumor_vs_limb: "",
   },
   validationSchema,
   onSubmit,
@@ -86,28 +114,116 @@ const formik = useFormik({
   return (
     <div className="">
       <div className="text-2xl font-bold">add new</div>
+      <Box alignItems="center" justifyContent="center">
       <form onSubmit={formik.handleSubmit}>
         <div>
-        <TextField id="name" label="name" variant="standard" value={formik.values.name} autoFocus onChange={formik.handleChange}
-        ></TextField>
-        {formik.touched.name && formik.errors.name && (
-        <FormHelperText error>{formik.errors.name}</FormHelperText>
-        )}</div>
+          <TextField id="name" label="Họ tên" variant="standard" value={formik.values.name} autoFocus onChange={formik.handleChange}></TextField>
+          {formik.touched.name && formik.errors.name && (
+            <FormHelperText error>{formik.errors.name}</FormHelperText>
+          )}
+        </div>
         <div>
-        <TextField id="price" label="price" type="number" variant="standard" value={formik.values.price} onChange={formik.handleChange}
-        ></TextField>
-        {formik.touched.price && formik.errors.price && (
-        <FormHelperText error>{formik.errors.price}</FormHelperText>
-        )}</div>
-        <RadioGroup aria-label="stockye" name="stockye" defaultValue={formik.values.stockye} onChange={(e) => {
-          formik.setFieldValue("stockye", e.target.value);
+          <TextField id="pid" label="PID" type="number" variant="standard" value={formik.values.pid} onChange={formik.handleChange}></TextField>
+          {formik.touched.pid && formik.errors.pid && (
+            <FormHelperText error>{formik.errors.pid}</FormHelperText>
+          )}
+        </div>
+        <RadioGroup aria-label="Giới tính" name="gender" defaultValue={formik.values.gender} onChange={(e) => {
+          formik.setFieldValue("gender", e.target.value);
           console.log(e.target.value)
         }}>
-          <FormControlLabel value="I" control={<Radio />} label="in stock" />
-          <FormControlLabel value="O" control={<Radio />} label="out of stock" />
+          <FormControlLabel value="Nam" control={<Radio />} label="Nam" />
+          <FormControlLabel value="Nữ" control={<Radio />} label="Nữ" />
         </RadioGroup>
+        <div>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker id="dob" label="Ngày sinh" variant="standard" value={formik.values.dob} onChange={formik.handleChange}></DatePicker>
+              {formik.touched.dob && formik.errors.dob && (
+                <FormHelperText error>{formik.errors.dob}</FormHelperText>
+              )}
+          </LocalizationProvider>    
+        </div>
+        <div>
+          <TextField id="address" label="Địa chỉ" variant="standard" defaultValue={formik.values.address} onChange={formik.handleChange}></TextField>
+          {formik.touched.address && formik.errors.address && (
+            <FormHelperText error>{formik.errors.address}</FormHelperText>
+          )}
+        </div>
+        <div>
+        <TextField id="phone" label="SĐT" variant="standard" defaultValue={formik.values.phone} onChange={formik.handleChange}></TextField>
+          {formik.touched.phone && formik.errors.phone && (
+            <FormHelperText error>{formik.errors.phone}</FormHelperText>
+          )}
+        </div>
+        <div>
+        <TextField id="icd10" label="ICD10" variant="standard" multiline rows={4} defaultValue={formik.values.icd10} onChange={formik.handleChange}></TextField>
+          {formik.touched.icd10 && formik.errors.icd10 && (
+            <FormHelperText error>{formik.errors.icd10}</FormHelperText>
+          )}
+        </div>
+        <div>
+        <TextField id="med_history" label="Medical history" variant="standard" multiline rows={10} defaultValue={formik.values.med_history} onChange={formik.handleChange}></TextField>
+          {formik.touched.med_history && formik.errors.med_history && (
+            <FormHelperText error>{formik.errors.med_history}</FormHelperText>
+          )}
+        </div>
+        <div>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker id="osd" label="Onset symptom date"variant="standard" value={formik.values.osd} onChange={formik.handleChange}></DatePicker>
+          </LocalizationProvider>
+        </div>
+        <div>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker id="diagdate" label="Ngày chẩn đoán" variant="standard" value={formik.values.diagdate} onChange={formik.handleChange}></DatePicker>
+          </LocalizationProvider>
+        </div>
+        <div>
+          <TextField id="med_records" label="Tiền sử bệnh bản thân, gia đình" variant="standard" defaultValue={formik.values.med_records} onChange={formik.handleChange}
+          helperText="0. Không có gì đặc biệt
+          1. Xạ trị
+          2. Hóa chất
+          3. Tiền sử nhiễm khuẩn
+          4. Gia đình >1 người ung thư
+          5. Bệnh lý đặc biệt khác đi kèm"></TextField>
+        </div>
+        <div>
+          <TextField id="biopsy_location" label="Nơi sinh thiết" variant="standard" defaultValue={formik.values.biopsy_location} onChange={formik.handleChange}
+          helperText="1. Bệnh viện K
+          2. Tâm Anh
+          3. Vinmec Time City
+          4. Vinmec Central Park
+          5. Chấn thương chỉnh hình HCM
+          6. Ung bướu Hồ Chí Minh
+          7. Nhi đồng TP HCM
+          8. BV 108
+          9. BV Việt Đức
+          10. BV khác"></TextField>
+        </div>
+        <div>
+          <TextField id="biopsy" label="Đường sinh thiết" variant="standard" defaultValue={formik.values.biopsy} onChange={formik.handleChange}
+          helperText="0. Không sinh thiết
+          1. Sinh thiết mở đúng 
+          2. Đúng vị trí nhưng dài 
+          3. Sai cả vị trí hoặc cách thức sinh thiết
+          4. Core needle biopsy"></TextField>
+        </div>
+        <div>
+          <TextField id="broken_bones_complications" label="Biến chứng gãy xương bệnh lý" variant="standard" defaultValue={formik.values.broken_bones_complications} onChange={formik.handleChange}
+          helperText="0. Không; 1. Có"></TextField>
+        </div>
+        <div>
+          <TextField id="tumor_size" label="Kích thước khối u" variant="standard" defaultValue={formik.values.tumor_size} onChange={formik.handleChange}></TextField>
+        </div>
+        <div>
+          <TextField id="skip_lesion" label="Skip lesion" variant="standard" defaultValue={formik.values.skip_lesion} onChange={formik.handleChange}
+          helperText="0. Không; 1. Có"></TextField>
+        </div>
+        <div>
+          <TextField id="tumor_vs_limb" label="Tỷ lệ chu vi u so chi đối diện" variant="standard" defaultValue={formik.values.tumor_vs_limb} onChange={formik.handleChange}></TextField>
+        </div>
         <Button type="submit">save</Button>
       </form>
+      </Box>
       {snack.open && <Snackbar open={snack.open} autoHideDuration={4000} onClose={handleClose}>
               <Alert
               onClose={handleClose}

@@ -1,6 +1,4 @@
-import admin from "firebase-admin";
-import { getApps } from "firebase-admin/app";
-import { getApp } from "firebase/app";
+import admin, { auth } from "firebase-admin";
 
 const serviceAccount = {
   type: "service_account",
@@ -30,8 +28,8 @@ if (!admin.apps.length) {
 export const validateRequest = async (req) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
-    console.log("token", token);
-    const decodedToken = await app.auth().verifyIdToken(token);
+    //console.log("token", token);
+    const decodedToken = await auth().verifyIdToken(token);
     return decodedToken;
   } catch (error) {
     console.log(error);

@@ -3,10 +3,10 @@ import { AppProviders } from "@app/components/app-providers";
 import Link from "next/link"
 export default function Nav() {
     return(
-        <AppBar position="static">
+        <AppBar position="sticky">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Box component="img" src="https://media.discordapp.net/attachments/893413559596380161/1167845849355788429/Megurine_Luka_-_25-ji_Nightcord_de._Chibi.webp?ex=654f9c34&is=653d2734&hm=7768b4f2c8927ebc1ed81799377f688981de93f044d1d54e9eb73f330d944ff0&=&width=50&height=50"></Box>
+                    <Box component="img" src="https://static.miraheze.org/projectsekaiwiki/thumb/b/b9/25ji_Luka_chibi.png/64px-25ji_Luka_chibi.png"></Box>
                     <Typography
                         variant="h6"
                         noWrap
@@ -24,9 +24,9 @@ export default function Nav() {
                     >
                         METALLIX
                     </Typography>
-                    <ButtonGroup variant="text">
-                    <Button><Link href="/" className="mx-2 text-pink-500">home</Link></Button>
-                    <Button><Link href="/subapp" className="mx-2 text-pink-500">item list</Link></Button>
+                    <ButtonGroup variant="text" className="flex item-center">
+                    <Button className="py-4"><Link href="/" className="mx-2 text-pink-500">home</Link></Button>
+                    <Button className="py-4"><Link href="/subapp" className="mx-2 text-pink-500">ứng dụng</Link></Button>
                     </ButtonGroup>
                 </Toolbar>
             </Container>

@@ -1,12 +1,13 @@
 "use client";
 import { ThemeContext } from "@app/app/contexts/theme.context";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Provider } from "react-redux";
 import { NextButton } from "./app-button";
 import { store } from "@app/store/store";
 import { AppFirebase } from "./app-firebase";
 import { CssBaseline, StyledEngineProvider, ThemeProvider, createTheme } from "@mui/material";
 import { pink } from "@mui/material/colors";
+import loadingScreen from "@app/app/loading";
 
 const theme = createTheme({
     palette: {
@@ -35,7 +36,8 @@ export const AppProviders = ( {children} ) => {
             <AppFirebase>
                 <StyledEngineProvider injectFirst>
                     <ThemeProvider theme={theme}>
-                        <CssBaseline />          
+                        <CssBaseline />
+                        <Suspense fallback={<loadingScreen/>}/>          
                         { children }
                     </ThemeProvider>
                 </StyledEngineProvider>

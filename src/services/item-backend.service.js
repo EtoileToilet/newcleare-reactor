@@ -4,14 +4,15 @@ const getAuthorizationHeader = async () => {
     const token = await auth.currentUser?.getIdToken();
     console.log(token);
     return {
-        authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
     };
 };
 const searchItem = async (filters, pagination) => {
     let url = '/api/items?';
     url += `searchTerm=${encodeURIComponent(filters.searchTerm)}`;
-    url += `&stockye=${encodeURIComponent(filters.stockye)}`;
-    url += `&pageIndex=${encodeURIComponent(filters.pageIndex)}`;
+    url += `&gender=${encodeURIComponent(filters.gender)}`;
+    url += `&pageIndex=${encodeURIComponent(pagination.pageIndex)}`;
+    url += `&state=${encodeURIComponent(filters.state)}`;
     url += `&itemsPerPage=${encodeURIComponent(pagination.itemsPerPage)}`;
     const response = await fetch(url, {
         headers: {

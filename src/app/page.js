@@ -1,14 +1,16 @@
 "use client";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { NextButton } from "@app/components/app-button";
 import { useSelector } from "react-redux";
 import { getAuth, signOut } from "firebase/auth";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import Calendar from "react-calendar";
+import styles from "./Calendar.css";
+import { useState } from "react";
 
 export default function Home() {
+  const [value, onChange] = useState(new Date()); 
   const router = useRouter();
-  const user = useSelector(rootState => rootState.user)
+  const user = useSelector((rootState) => rootState.user);
   const gotoTest = () => {router.push("/subapp");};
   const alertTest = () => {
     alert("top o' the mornin' to ya");
@@ -26,16 +28,19 @@ export default function Home() {
   }
   return (
     <main className='text-center'>
-    <div className='text-5xl px-4 py-3'>home</div>
-    <div className="text-xl px-4 pt-3 pb-10">*insert a really cool tagline that i can&apos;t think of yet here*</div>
+    <div className='text-5xl px-4 py-3'>Home</div>
+    <Box className="size-1/2 content-center flex-auto border border-white" suppressHydrationWarning>
+      <Calendar className={styles} showWeekNumbers onChange={onChange} value={value}  />
+    </Box>
+    <div className="text-xl px-4 pt-3 pb-10"></div>
     {!user.id && <>
-      <Button sx={{mr:2,}} onClick={signIn}>sign in</Button>
-      <Button sx={{mr:2,}} onClick={register}>register</Button>
+      <Button sx={{mr:2,}} onClick={signIn}>Đăng nhập</Button>
+      <Button sx={{mr:2,}} onClick={register}>Đăng ký</Button>
     </>}
     {!!user.id && <>
-      <span className="px-4 pt-3 pb-5">good day, {user.displayName}</span>
-      <Button onClick={signOutUser}>sign out</Button>
-      <Button onClick={gotoTest}>go to subapp</Button>
+      <span className="px-4 pt-3 pb-5">Xin chào, {user.displayName}</span>
+      <Button onClick={signOutUser}>Đăng xuất</Button>
+      <Button onClick={gotoTest}>Vào ứng dụng</Button>
     </>}    
     
     {/* <button onClick={alertTest} className='border border-solid py-2 px-4 rounded-full border-pink-500 mr-2'>how do irish people say good morning?</button>

@@ -27,8 +27,8 @@ const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const validationSchema = yup.object({
-  email: yup.string().required("what? did you get your identity stolen or something?").email("i've seen a lot of emails, and i'm pretty sure yours doesn't look like one"),
-  password: yup.string().required("you wanna leave your data unsecured in the open or what?").matches(passwordRegex, "at least 8 characters, one lowercase, one uppercase, one number, one special character and i'll let you in"),
+  email: yup.string().required("Vui lòng nhập email").email("Email không hợp lệ"),
+  password: yup.string().required("Vui lòng nhập password").matches(passwordRegex, "Mật khẩu cần ít nhất 8 ký tự, bao gồm 1 chữ hoa, 1 chữ thường và 1 ký tự đặc biệt"),
 })
 
 const provider = new GoogleAuthProvider();
@@ -65,7 +65,7 @@ export default function SignIn() {
         //alert('email, please?');
         setSnack({
           open: true,
-          message: "email, please?",
+          message: "Vui lòng nhập email",
           severity: "error",
         })
         return;
@@ -74,7 +74,7 @@ export default function SignIn() {
         //alert("surely you know that a password field can't be blank, no?");
         setSnack({
           open: true,
-          message: "surely you know that a password field can't be blank, no?",
+          message: "Vui lòng nhập password",
           severity: "error",
         });
         return;
@@ -83,7 +83,7 @@ export default function SignIn() {
       await signInWithEmailAndPassword(auth, values.email, values.password);
       setSnack({
         open: true,
-        message: "welcome back",
+        message: "Thành công",
         severity: "success",
       });
       await sleep(1500);
@@ -92,10 +92,10 @@ export default function SignIn() {
       alert(e.message);
       let errorMessage = e.message;
       if (e.code === "auth/invalid-login-credentials") {
-        errorMessage = "something smells fishy. maybe recheck your credentials?"
+        errorMessage = "Sai thông tin đăng nhập"
       }
       if (e.code === "auth/invalid-email") {
-        errorMessage = "i've seen a lot of emails, and i'm pretty sure yours isn't one"
+        errorMessage = "Email không hợp lệ"
       }
       setSnack({
         open: true,
@@ -111,7 +111,7 @@ export default function SignIn() {
       await signInWithPopup(auth, provider);
       setSnack({
         open: true,
-        message: "welcome back",
+        message: "Thành công",
         severity: "success",
       });
       await sleep(1500);
@@ -127,7 +127,7 @@ export default function SignIn() {
       await sendPasswordResetEmail(auth, formik.values.email);
       setSnack({
         open: true,
-        message: "welcome back",
+        message: "Thành công",
         severity: "success",
       });
       await sleep(1500);
@@ -149,7 +149,7 @@ export default function SignIn() {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
       <div className="text-center">
-        <div className="text-lg">sign in</div>
+        <div className="text-lg">Đăng nhập</div>
         <form onSubmit={formik.handleSubmit}>
           <div className="p-2 flex flex-col gap-1 w-96">  
           <TextField required id="email" label="email" variant="standard" value={formik.values.email} onChange={formik.handleChange}
@@ -173,10 +173,10 @@ export default function SignIn() {
           <FormHelperText error>{formik.errors.password}</FormHelperText>)}
           </div>
           <div >
-            <Button type="submit">sign in</Button>
+            <Button type="submit">Đăng nhập</Button>
           </div>
-            <div className="p-2 w-30 flex-col gap-1"><Button><Link href="/signin/password-reset" style={{ textDecoration: 'none' }} className="mx-2 text-pink-700">forgot your password?</Link></Button></div>
-            <Button onClick={handleGoogleLogin} startIcon={<GoogleIcon/>}>sign in with google</Button>
+            <div className="p-2 w-30 flex-col gap-1"><Button><Link href="/signin/password-reset" style={{ textDecoration: 'none' }} className="mx-2 text-pink-700">Quên mật khẩu?</Link></Button></div>
+            <Button onClick={handleGoogleLogin} startIcon={<GoogleIcon/>}>Đăng nhập bằng Google</Button>
         </form>
           <div>
             {snack.open && <Snackbar open={snack.open} autoHideDuration={4000} onClose={handleClose}>

@@ -30,8 +30,8 @@ const update = async (req, res) => {
     }
     item.update({
         name: updatedData.name,
-        price: updatedData.price,
-        stockye: updatedData.stockye,
+        pid: updatedData.pid,
+        gender: updatedData.gender,
     });
     res.status(200).json({});
 };

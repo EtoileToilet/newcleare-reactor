@@ -1,5 +1,4 @@
 "use client";
-import { ThemeContext } from "@app/app/contexts/theme.context";
 import { useEffect, useState } from "react";
 import { Provider, connect, useDispatch } from "react-redux";
 import { NextButton } from "./app-button";

@@ -11,8 +11,8 @@ const searchItem = async (filters, pagination) => {
     if (filters.searchTerm.trim()) {
         filteredItems = filteredItems.filter((s) => s.name.toLowerCase().includes(searchTerm));
     };
-    if (filters.stockye) {
-        filteredItems = filteredItems.filter((s) => s.stockye === filters.stockye);
+    if (filters.gender) {
+        filteredItems = filteredItems.filter((s) => s.gender === filters.gender);
     };
     const total = filteredItems.length;
     const paginatedItems = filteredItems.slice(pagination.pageIndex * pagination.itemsPerPage, (pagination.pageIndex + 1) * pagination.itemsPerPage);

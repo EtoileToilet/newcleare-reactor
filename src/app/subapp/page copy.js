@@ -25,7 +25,7 @@ export default function SubApp() {
   });
   const [filters, setFilters] = useState({
     searchTerm: "",
-    stockye: "",
+    gender: "",
   });
   const [searchTermDebounced] = useDebounce(filters.searchTerm, 300);
   const [pagination, setPagination] = useState({
@@ -63,7 +63,7 @@ export default function SubApp() {
       pageIndex: 0,
     })
     lookforItems();
-  }, [filters.stockye, searchTermDebounced]);
+  }, [filters.gender, searchTermDebounced]);
   useEffect(() => {
     lookforItems();
   }, [pagination.pageIndex]);
@@ -87,10 +87,10 @@ export default function SubApp() {
         })
       }}></TextField>
       <div className="pt-4"><Button onClick={addNew}>add new</Button></div>
-              <RadioGroup aria-label="stockye" name="stockye" defaultValue={filters.stockye} onChange={(e) => {
+              <RadioGroup aria-label="gender" name="gender" defaultValue={filters.gender} onChange={(e) => {
           setFilters({
             ...filters,
-            stockye: e.target.value,
+            gender: e.target.value,
           })
         }}>
           <div>
@@ -106,8 +106,8 @@ export default function SubApp() {
         {searchResult.data.map((item) => (
           <div key={item.id} className="border border-dashed border-pink-500 p-2 mt-2">
             <div>name: {item.name}</div>
-            <div>price: {item.price}</div>
-            <div>status: {getStockStatus(item.stockye)}</div>
+            <div>pid: {item.pid}</div>
+            <div>status: {getStockStatus(item.gender)}</div>
             <div>
               <Button color="primary" startIcon={<SvgIcon component={Edit}/>} onClick={() => modItem(item.id)}>edit</Button>
               <Button color="error" startIcon={<SvgIcon component={Delete}/>} onClick={() => confirmDeletion(item)}>delete</Button>
