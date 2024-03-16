@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import MuiAlert from "@mui/material/Alert";
 import { Box, Button, FormHelperText, Snackbar } from "@mui/material";
-import { useFormik, enableReinitialize } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 import { sleep } from "@app/utils/sleep";
 import dayjs, { Dayjs } from "dayjs";
@@ -85,7 +85,6 @@ export default function EditItem({params}) {
   }
 };
 const formik = useFormik({
-  enableReinitialize,
   initialValues: {
     id: undefined,
     name: "",
